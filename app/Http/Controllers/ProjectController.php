@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class ProjectController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource (Admin).
      */
     public function index()
     {
@@ -42,6 +42,24 @@ class ProjectController extends Controller
         $statuses = ['draft', 'berlangsung', 'selesai', 'dibatalkan'];
 
         return view('admin.project.index', compact('projects', 'kategori', 'statuses'));
+    }
+
+    /**
+     * Display public listing of projects.
+     */
+    public function publicIndex()
+    {
+        $projects = Project::latest()
+            ->when(request('search'), function($query) {
+                $query->where('judul', 'like', '%' . request('search') . '%')
+                      ->orWhere('deskripsi', 'like', '%' . request('search') . '%');
+            })
+            ->when(request('kategori'), function($query) {
+                $query->where('kategori', request('kategori'));
+            })
+            ->paginate(12);
+
+        return view('project', compact('projects'));
     }
 
     /**

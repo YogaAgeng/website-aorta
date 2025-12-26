@@ -14,16 +14,12 @@ return new class extends Migration
         Schema::create('artikels', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
-            $table->string('slug')->unique();
             $table->text('deskripsi');
-            $table->text('konten');
             $table->string('gambar')->nullable();
-            $table->string('kategori');
-            $table->string('penulis');
-            $table->boolean('draft')->default(true);
-            $table->dateTime('tanggal_terbit')->nullable();
-            $table->integer('views')->default(0);
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->json('kategori')->nullable(); // Array of tags
+            $table->string('penulis')->nullable();
+            $table->date('tanggal_terbit');
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
             $table->softDeletes();
         });

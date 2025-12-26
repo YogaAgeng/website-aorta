@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="img/Logo%20AORTA%20(2).png">
-    <title>Login - AORTA Malang</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap">
-    <link rel="stylesheet" href="css/general.css">
-    <style>
+    <title>Daftar - AORTA Malang</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+       <link rel="stylesheet" href="css/general.css">
+     <style>
         /* CSS INTERNAL KHUSUS REGISTER PAGE */
         :root {
             --primary: #154069;
@@ -412,13 +412,20 @@
         
         .login-container {
             max-width: 500px;
-            margin: 0 auto;
             background: white;
-            border-radius: var(--border-radius);
             padding: 40px;
+            border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            position: relative;
-            overflow: hidden;
+            width: 100%;
+            margin: 0 auto;
+            outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Remove focus outline from all elements */
+        *:focus {
+            outline: none !important;
+            box-shadow: none !important;
         }
         
         .login-container::before {
@@ -451,6 +458,30 @@
         
         .login-form {
             width: 100%;
+        }
+        
+        /* Remove all focus outlines */
+        *:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        
+        /* Specifically target form and its children */
+        form,
+        form *:focus,
+        form *:active,
+        form *:focus-visible,
+        form *:focus-within {
+            outline: none !important;
+            box-shadow: none !important;
+            -webkit-tap-highlight-color: transparent !important;
+        }
+        
+        /* For WebKit browsers */
+        @media (-webkit-min-device-pixel-ratio:0) {
+            *:focus {
+                outline: none !important;
+            }
         }
         
         .form-group {
@@ -728,119 +759,31 @@
         }
     </style>
 </head>
-<body>
-    <!-- Header Section -->
-    <header>
-        <!-- NAVBAR DI LUAR KONTEN UTAMA -->
-        <div class="nav-container">
-            <nav class="navbar" id="navbar">
-                <div class="nav-logo">
-                    <!-- Logo AORTA -->
-                    <img src="img/Logo%20AORTA%20(2).png" alt="AORTA Malang Logo" class="logo-img">
+<body class="bg-gray-100">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md">
+        <div class="container mx-auto px-6 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <img src="/img/Logo AORTA (2).png" alt="AORTA Malang" class="h-16">
                 </div>
-                
-                <!-- Menu Toggle untuk Mobile -->
-                <button class="menu-toggle" id="menuToggle">☰</button>
-                
-                <ul class="nav-menu" id="navMenu">
-                     <li class="nav-item">
-                        <a href="{{ route('home') }}" class="nav-link">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('artikel.index') }}" class="nav-link">Artikel</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('project.index') }}" class="nav-link">Proyek</a>
-                    </li>
-                    @auth
-                        <li class="nav-item">
-                            <a href="{{ route('dashboard') }}" class="nav-link">{{ Auth::user()->name }}</a>
-                        </li>
-                    @else
-                        <li class="nav-item">
-                            <a href="{{ route('register') }}" class="nav-link">Daftar</a>
-                        </li>
-                    @endauth
-                </ul>
-            </nav>
-        </div>
-        
-        <!-- Konten Utama Header (Teks + Bingkai) -->
-        <div class="header-main-content">
-            <!-- Header Text Container - Diposisikan di Kiri -->
-            <div class="hero-text-container">
-                <h1 class="tagline">Bergabung dengan AORTA Malang</h1>
-                <p class="tagline-sub">Menjadi bagian dari perubahan positif untuk kesehatan remaja di Malang. Bersama kita bisa belajar, berkembang, dan bertindak untuk masa depan yang lebih sehat.</p>
-                <a href="#guide" class="learn-more-btn">
-                    <span>Mulai Bergabung</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-            
-            <!-- Bingkai Persegi di Kanan -->
-            <div class="header-frame animate-on-scroll">
-                <div class="frame-container">
-                    <img src="img/Logo%20AORTA%20(2).png" alt="AORTA Malang Logo">
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{{ url('home') }}" class="text-gray-700 hover:text-blue-600">Beranda</a>
+                    <a href="{{ route('register') }}" class="text-gray-700 hover:text-blue-600">Masuk</a>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <main>
-        <!-- User Guide Section -->
-        <section id="guide" class="guide-section animate-on-scroll">
-            <div class="section-header">
-                <h2 class="section-title">Cara Bergabung</h2>
-                <p class="section-subtitle">Ikuti 3 langkah mudah untuk menjadi bagian dari AORTA Malang</p>
+    <!-- Register Form -->
+    <div class="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+        <div class="login-container">
+            <div class="login-header">
+                <h2>Daftar Akun Baru</h2>
+                <p>Bergabunglah dengan komunitas AORTA Malang</p>
             </div>
-            
-            <div class="guide-steps">
-                <!-- Step 1 -->
-                <div class="guide-step">
-                    <div class="step-number">1</div>
-                    <div class="step-icon">
-                        <i class="fab fa-instagram"></i>
-                    </div>
-                    <div class="step-content">
-                        <h3>Follow Instagram Kami</h3>
-                        <p>Follow Instagram resmi AORTA Malang untuk mendapatkan informasi terbaru tentang open recruitment dan kegiatan kami.</p>
-                    </div>
-                </div>
                 
-                <!-- Step 2 -->
-                <div class="guide-step">
-                    <div class="step-number">2</div>
-                    <div class="step-icon">
-                        <i class="fas fa-calendar-check"></i>
-                    </div>
-                    <div class="step-content">
-                        <h3>Tunggu Open Batch</h3>
-                        <p>Pantau pengumuman open batch yang akan diposting di Instagram kami. Biasanya dilakukan setiap 6 bulan sekali.</p>
-                    </div>
-                </div>
-                
-                <!-- Step 3 -->
-                <div class="guide-step">
-                    <div class="step-number">3</div>
-                    <div class="step-icon">
-                        <i class="fas fa-comments"></i>
-                    </div>
-                    <div class="step-content">
-                        <h3>Hubungi Admin</h3>
-                        <p>Setelah open batch dibuka, hubungi admin melalui Instagram untuk mendapatkan formulir pendaftaran dan informasi selanjutnya.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Login Section -->
-        <section class="login-section animate-on-scroll">
-            <div class="login-container">
-                <div class="login-header">
-                    <h2>Login Anggota</h2>
-                    <p>Masuk ke akun Anda untuk mengakses dashboard anggota</p>
-                </div>
-                   @if ($errors->any())
+                @if ($errors->any())
                     <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
                         <p class="font-bold">Error</p>
                         <ul>
@@ -850,140 +793,104 @@
                         </ul>
                     </div>
                 @endif
-                <form class="login-form" id="loginForm" method="POST" action="{{ route('login') }}">
-                    @csrf
+
+               <form class="login-form" method="POST" action="{{ route('register_2.store') }}">       @csrf
+
+                    <div class="form-group">
+                        <label for="name">Nama Lengkap</label>
+                        <input type="text" id="name" name="name" placeholder="Masukkan nama lengkap Anda" value="{{ old('name') }}" required autofocus>
+                        <div class="input-icon">
+                            <i class="far fa-user"></i>
+                        </div>
+                        @error('name')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Nomor Telepon</label>
+                        <input type="tel" id="phone" name="phone" placeholder="Masukkan nomor telepon" value="{{ old('phone') }}" required>
+                        <div class="input-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        @error('phone')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" placeholder="masukkan email anda" value="{{ old('email') }}" required autofocus>
+                        <input type="email" id="email" name="email" placeholder="Masukkan email Anda" value="{{ old('email') }}" required>
                         <div class="input-icon">
                             <i class="far fa-envelope"></i>
                         </div>
+                        @error('email')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
-                    
+
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" placeholder="masukkan password anda" name="password" required>
+                        <label for="address">Alamat</label>
+                        <div class="relative">
+                            <textarea name="address" id="address" rows="3" class="w-full px-4 py-3 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Masukkan alamat lengkap Anda" required>{{ old('address') }}</textarea>
+                            <div class="absolute left-3 top-3 text-gray-400">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                        </div>
+                        @error('address')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Kata Sandi</label>
+                        <input type="password" id="password" name="password" placeholder="Buat kata sandi yang aman" required>
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        @error('password')
+                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password_confirmation">Konfirmasi Kata Sandi</label>
+                        <input type="password" id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi kata sandi Anda" required>
                         <div class="input-icon">
                             <i class="fas fa-lock"></i>
                         </div>
                     </div>
-                    
+
                     <div class="form-options">
                         <div class="remember-me">
-                            <input type="checkbox" id="remember" name="remember">
-                            <label for="remember">Ingat saya</label>
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <label for="terms">Saya setuju dengan <a href="#" class="text-blue-600 hover:underline">Syarat dan Ketentuan</a> dan <a href="#" class="text-blue-600 hover:underline">Kebijakan Privasi</a></label>
                         </div>
-                        @if (Route::has('password.request'))
-                            <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:underline">Lupa kata sandi?</a>
-                        @endif
                     </div>
-                    
-                    <button type="submit" class="login-button w-full">
-                        Masuk
+
+                    <button type="submit" class="login-button">
+                        Daftar Sekarang
                     </button>
-                    
+                    @if (session('error'))
+                        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
+                            <p class="font-bold">Error</p>
+                            <p>{{ session('error') }}</p>
+                        </div>
+                    @endif
+
                     <div class="register-link">
-                        <span>Belum punya akun?</span>
-                        <a href="{{ route('register_2') }}" 
-                           class="instagram-link">
-                           Daftar di sini
+                        <span>Sudah punya akun?</span>
+                        <a href="{{ route('register') }}" class="instagram-link">
+                            Masuk disini
                         </a>
-                    </div>   
+                    </div>
                 </form>
             </div>
-        </section>
-    </main>
-
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-content footer-top-border">
-            <!-- Sisi Kiri: Copyright -->
-            <div class="copyright">2025 - AORTA MALANG</div>
-            
-            <!-- Sisi Kanan: Social Media -->
-            <div class="social-media">
-                <a href="https://www.tiktok.com/@aorta.malang?_t=ZS-90fsbBahod6&_r=1" class="social-icon" title="TikTok" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-tiktok"></i>
-                </a>
-                <a href="https://www.instagram.com/aortacommunitymalang?igsh=MW9yZDA5M253ZXZzZw%3D%3D&utm_source=qr" class="social-icon" title="Instagram" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://mail.google.com/mail/?view=cm&fs=1&to=aortamalang@gmail.com" class="social-icon" title="Gmail" target="_blank" rel="noopener noreferrer">
-                    <i class="far fa-envelope"></i>
-                </a>
-                <a href="https://youtube.com/@aortamalang?si=CszVRgovv8Uhun79" class="social-icon" title="YouTube" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-youtube"></i>
-                </a>
-            </div>
         </div>
-    </footer>
+    </div>
 
     <script>
-        // JavaScript untuk interaktivitas
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('JavaScript loaded successfully');
-            
-            // Sticky Navigation
-            const navbar = document.getElementById('navbar');
-            const header = document.querySelector('header');
-            
-            if (navbar && header) {
-                const headerHeight = header.offsetHeight;
-                
-                // Function to handle scroll
-                function handleScroll() {
-                    if (window.scrollY > headerHeight - 100) {
-                        navbar.classList.add('sticky');
-                    } else {
-                        navbar.classList.remove('sticky');
-                    }
-                }
-                
-                // Listen for scroll events
-                window.addEventListener('scroll', handleScroll);
-                
-                // Trigger once to check initial state
-                handleScroll();
-            }
-            
-            // Smooth scroll untuk tombol CTA
-            const learnMoreBtn = document.querySelector('.learn-more-btn');
-            if (learnMoreBtn) {
-                learnMoreBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.querySelector('#guide');
-                    if (target) {
-                        const navbar = document.querySelector('.navbar');
-                        const offset = navbar && navbar.classList.contains('sticky') ? 80 : 20;
-                        window.scrollTo({
-                            top: target.offsetTop - offset,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            }
-            
-            // Mobile menu toggle
-            const menuToggle = document.getElementById('menuToggle');
-            const navMenu = document.getElementById('navMenu');
-            
-            if (menuToggle && navMenu) {
-                menuToggle.addEventListener('click', function() {
-                    navMenu.classList.toggle('active');
-                });
-                
-                // Close mobile menu when clicking on a link
-                const navLinks = document.querySelectorAll('.nav-link');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        if (navMenu.classList.contains('active')) {
-                            navMenu.classList.remove('active');
-                        }
-                    });
-                });
-            }
-    
-             // Mobile menu toggle functionality
+        // Mobile menu toggle functionality
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.getElementById('menuToggle');
             const navMenu = document.getElementById('navMenu');
@@ -993,82 +900,17 @@
                     navMenu.classList.toggle('hidden');
                 });
             }
-        });
-            // Forgot password link
-            const forgotPassword = document.querySelector('.forgot-password');
-            if (forgotPassword) {
-                forgotPassword.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    alert('Fitur reset password akan segera hadir!');
-                });
-            }
-            
-            // Scroll animations
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                    }
-                });
-            }, observerOptions);
-            
-            // Observe all elements with animate-on-scroll class
-            document.querySelectorAll('.animate-on-scroll').forEach(element => {
-                observer.observe(element);
-            });
-            
-            // Add some interactive effects to guide steps
-            const guideSteps = document.querySelectorAll('.guide-step');
-            guideSteps.forEach(step => {
-                step.addEventListener('mouseenter', function() {
-                    const icon = this.querySelector('.step-icon i');
-                    if (icon) {
-                        icon.style.transform = 'scale(1.2) rotate(10deg)';
-                    }
-                });
-                
-                step.addEventListener('mouseleave', function() {
-                    const icon = this.querySelector('.step-icon i');
-                    if (icon) {
-                        icon.style.transform = '';
-                    }
-                });
-            });
-            
-            // Form input effects
-            const formInputs = document.querySelectorAll('.form-group input');
+
+            // Add focus styles for better accessibility
+            const formInputs = document.querySelectorAll('input, textarea, select');
             formInputs.forEach(input => {
                 input.addEventListener('focus', function() {
-                    this.parentElement.classList.add('focused');
+                    this.parentElement.classList.add('ring-2', 'ring-blue-500', 'ring-opacity-50');
                 });
                 
                 input.addEventListener('blur', function() {
-                    this.parentElement.classList.remove('focused');
+                    this.parentElement.classList.remove('ring-2', 'ring-blue-500', 'ring-opacity-50');
                 });
-            });
-            
-            // Animasi saat elemen muncul di viewport
-            const sectionObserver = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-            
-            // Terapkan animasi pada section
-            const sections = document.querySelectorAll('section');
-            sections.forEach(section => {
-                section.style.opacity = '0';
-                section.style.transform = 'translateY(20px)';
-                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-                sectionObserver.observe(section);
             });
         });
     </script>

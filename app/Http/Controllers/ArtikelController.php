@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 class ArtikelController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource (Admin).
      */
     public function index()
     {
@@ -34,6 +34,40 @@ class ArtikelController extends Controller
         $kategori = Artikel::select('kategori')->distinct()->pluck('kategori');
 
         return view('admin.artikel.index', compact('artikels', 'kategori'));
+    }
+
+    /**
+     * Display public listing of articles.
+     */
+    public function publicIndex()
+    {
+        // Featured article (latest)
+        $featuredArticle = Artikel::latest('tanggal_terbit')
+            ->first();
+
+        // Popular articles for sidebar (latest 3, excluding featured)
+        $popularArticles = Artikel::latest('tanggal_terbit')
+            ->when($featuredArticle, function($query) use ($featuredArticle) {
+                $query->where('id', '!=', $featuredArticle->id);
+            })
+            ->limit(3)
+            ->get();
+
+        // All articles for grid (excluding featured)
+        $artikels = Artikel::latest('tanggal_terbit')
+            ->when(request('search'), function($query) {
+                $query->where('judul', 'like', '%' . request('search') . '%')
+                      ->orWhere('deskripsi', 'like', '%' . request('search') . '%');
+            })
+            ->when(request('kategori'), function($query) {
+                $query->whereJsonContains('kategori', request('kategori'));
+            })
+            ->when($featuredArticle, function($query) use ($featuredArticle) {
+                $query->where('id', '!=', $featuredArticle->id);
+            })
+            ->paginate(12);
+
+        return view('articles', compact('artikels', 'featuredArticle', 'popularArticles'));
     }
 
     /**
@@ -83,9 +117,6 @@ class ArtikelController extends Controller
      */
     public function show(Artikel $artikel)
     {
-        // Increment view count
-        $artikel->incrementViews();
-        
         return view('artikel.show', compact('artikel'));
     }
 

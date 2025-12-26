@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard Admin - Aorta Malang</title>
     <link rel="icon" type="image/png" href="img/Logo AORTA (2).png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -52,15 +53,26 @@
             padding: 20px 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 80px;
+            min-height: 90px;
+            gap: 8px;
         }
 
         .logo img {
-            max-width: 120px;
+            max-width: 100px;
             height: auto;
             object-fit: contain;
+        }
+        
+        .logo h2 {
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: 1px;
+            text-align: center;
         }
 
         .nav-menu {
@@ -96,47 +108,76 @@
         /* User Info Section with Logout */
         .user-section {
             margin-top: auto;
-            padding: 20px 15px;
-            background: rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.15);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-profile {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
         
         .user-info {
             display: flex;
             align-items: center;
+            gap: 12px;
+            padding-bottom: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .user-avatar {
-            width: 50px;
-            height: 50px;
+            width: 48px;
+            height: 48px;
+            min-width: 48px;
             border-radius: 50%;
             background-color: var(--secondary);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            margin-right: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            overflow: hidden;
+            flex-shrink: 0;
         }
         
-        .user-details h3 {
-            font-size: 16px;
-            margin-bottom: 5px;
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
-        .user-details p {
-            font-size: 13px;
-            color: var(--text-light);
+        .user-info-text {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
         }
         
-        .user-actions {
-            padding: 15px 20px;
+        .user-info-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: white;
+            margin: 0 0 4px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .user-info-text p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .btn-logout {
-            width: 95%;
-            padding: 10px;
-            background-color: rgba(231, 76, 60, 0.8);
+            width: 100%;
+            padding: 10px 15px;
+            background-color: rgba(231, 76, 60, 0.9);
             color: white;
             border: none;
             border-radius: 6px;
@@ -144,17 +185,20 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 8px;
             transition: all 0.3s ease;
             font-weight: 600;
+            font-size: 13px;
         }
         
         .btn-logout:hover {
-            background-color: rgba(192, 57, 43, 0.9);
-            transform: translateY(-2px);
+            background-color: rgba(192, 57, 43, 1);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(192, 57, 43, 0.3);
         }
         
         .btn-logout i {
-            margin-right: 8px;
+            font-size: 14px;
         }
 
         /* Main Content - Adjusted for fixed sidebar */
@@ -404,12 +448,28 @@
             height: 180px;
             overflow: hidden;
             background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
         }
 
         .content-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            display: block;
+        }
+
+        .content-image .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 48px;
         }
 
         .content-body {
@@ -738,11 +798,20 @@
             display: none;
         }
 
+        .image-preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .image-preview img {
             max-width: 100%;
-            max-height: 200px;
+            max-height: 300px;
             border-radius: 6px;
             box-shadow: var(--shadow);
+            object-fit: contain;
+            background-color: #f9f9f9;
+            padding: 10px;
         }
 
         .btn-remove-image {
@@ -822,52 +891,6 @@
             background-color: #2980b9;
         }
 
-        /* User Section Styles */
-        .user-section {
-            margin-top: auto;
-            padding: 20px;
-            border-top: 1px solid #2c3e50;
-        }
-
-        .user-details {
-            margin-top: 15px;
-            text-align: center;
-        }
-
-        .user-name {
-            color: #fff;
-            font-weight: 500;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-
-        .logout-form {
-            margin-top: 15px;
-        }
-
-        .btn-logout {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-            padding: 8px 15px;
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn-logout:hover {
-            background-color: #c0392b;
-        }
-
-        .btn-logout i {
-            font-size: 0.9rem;
-        }
 
         /* Responsive Adjustments */
         @media (max-width: 992px) {
@@ -880,7 +903,7 @@
                 max-width: 50px;
             }
             
-            .logo h1, .nav-item span, .user-details {
+            .logo h2, .nav-item span, .user-info-text {
                 display: none;
             }
             
@@ -900,11 +923,16 @@
             
             .user-info {
                 justify-content: center;
-                padding: 20px 10px;
+                padding: 0;
+                border-bottom: none;
             }
             
             .user-avatar {
                 margin-right: 0;
+            }
+            
+            .btn-logout span {
+                display: none;
             }
             
             .main-content {
@@ -955,7 +983,15 @@
                 border-bottom: 4px solid var(--secondary);
             }
             
-            .user-info {
+            .user-section {
+                padding: 10px;
+            }
+            
+            .user-info-text {
+                display: none;
+            }
+            
+            .btn-logout span {
                 display: none;
             }
             
@@ -1031,7 +1067,8 @@
     <!-- Sidebar/Navbar -->
     <div class="sidebar">
         <div class="logo">
-            <img src="img/logoastrasatuIndonesia .png" alt="Aorta Malang Logo">
+            <img src="{{ asset('img/logoastrasatuIndonesia .png') }}" alt="Aorta Malang Logo">
+            <h2>AORTA MALANG</h2>
         </div>
         
         <div class="nav-menu">
@@ -1047,33 +1084,33 @@
                 <i class="fas fa-project-diagram"></i>
                 <span>Project</span>
             </div>
+            
         </div>
         
         <!-- User Section with Logout -->
         <div class="user-section">
-            <div class="user-info">
-                <div class="user-avatar">
-                    @if(auth()->user()->profile_picture)
-                        <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" 
-                             alt="{{ auth()->user()->name }}">
-                    @else
-                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                    @endif
+            <div class="user-profile">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        @if(auth()->user()->profile_picture)
+                            <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" 
+                                 alt="{{ auth()->user()->name }}">
+                        @else
+                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                        @endif
+                    </div>
+                    <div class="user-info-text">
+                        <h4>{{ Auth::user()->name ?? 'User' }}</h4>
+                        <p>{{ Auth::user()->role->name ?? 'User' }}</p>
+                    </div>
                 </div>
-                <div class="user-details">
-                    <div class="user-name">{{ auth()->user()->name }}</div>
-                    <div class="user-name">{{ auth()->user()->role->name }}</div>
-                </div>
-    </div>
-                <form method="POST" action="{{ route('logout') }}" class="logout-form">
+                <form id="logout-form" action="{{ route('logout') }}" method="POST">
                     @csrf
-                
-                      <div class="user-actions">
-                <button class="btn-logout" onclick="window.location.href='home.html'">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Keluar
-                </button>
-                </form>                
+                    <button type="submit" class="btn-logout" onclick="return confirm('Yakin ingin keluar?')" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Keluar</span>
+                    </button>
+                </form>              
             </div>
         </div>
     </div>
@@ -1268,7 +1305,7 @@
                     </div>
                     
                     <!-- Project Leader Field - Only for Project -->
-                    <div class="form-group" id="project-leader-field">
+                    <div class="form-group" id="project-leader-field" style="display: none;">
                         <label for="item-project-leader">Project Leader</label>
                         <input type="text" id="item-project-leader" placeholder="Nama project leader">
                     </div>
@@ -1296,15 +1333,10 @@
                         </div>
                     </div>
                     
-                    <!-- Author and Uploader Section - Only for Artikel -->
+                    <!-- Author Section - Only for Artikel -->
                     <div class="form-group" id="author-field">
                         <label for="item-author">Penulis</label>
                         <input type="text" id="item-author" placeholder="Nama penulis">
-                    </div>
-                    
-                    <div class="form-group" id="uploader-field">
-                        <label for="item-uploader">Pengunggah</label>
-                        <input type="text" id="item-uploader" placeholder="Nama pengunggah">
                     </div>
                     
                     <div class="form-group" id="date-field">
@@ -1322,48 +1354,91 @@
     </div>
 
     <script>
-        // Data storage
-        let projects = [
-            {
-                id: 1,
-                title: "Renal Health Monitoring",
-                description: "Sistem monitoring kesehatan ginjal berbasis IoT dengan analisis data real-time untuk pasien penyakit ginjal kronis.",
-                date: "2023-12-15",
-                projectLeader: "Ulfi Sa'adah",
-                image: null
-            },
-            {
-                id: 2,
-                title: "Emotion Analysis Tool",
-                description: "Pengembangan alat analisis emosi pasien untuk membantu diagnosis dan penanganan gangguan psikosomatis terkait ginjal.",
-                date: "2024-01-20",
-                projectLeader: "Ahmad Fauzi",
-                image: null
+        // CSRF token for API calls
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+        // API Base URL
+        const apiBaseUrl = '/api';
+
+        // Data storage (will be loaded from API)
+        let projects = [];
+        let articles = [];
+
+        // API helper functions
+        async function apiCall(endpoint, options = {}) {
+            const defaultOptions = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json',
+                },
+                credentials: 'same-origin', // Include session cookies
+                ...options
+            };
+
+            // Add CSRF token for non-GET requests
+            if (options.method && options.method !== 'GET') {
+                defaultOptions.headers['X-CSRF-TOKEN'] = csrfToken;
             }
-        ];
-        
-        let articles = [
-            {
-                id: 1,
-                title: "Pentingnya Kesehatan Reproduksi Remaja",
-                description: "Panduan lengkap tentang pentingnya menjaga kesehatan reproduksi sejak dini bagi remaja.",
-                date: "2023-10-05",
-                tags: ["kesehatan-reproduksi", "kesehatan-mental"],
-                author: "Dr. Sari Indah",
-                uploader: "Ulfi Sa'adah",
-                image: null
-            },
-            {
-                id: 2,
-                title: "Gizi Seimbang untuk Remaja Aktif",
-                description: "Tips dan panduan gizi seimbang untuk mendukung aktivitas remaja yang padat.",
-                date: "2023-09-18",
-                tags: ["gizi-remaja", "perilaku-hidup-bersih"],
-                author: "Nutrisionis Ahmad",
-                uploader: "Ulfi Sa'adah",
-                image: null
+
+            const response = await fetch(`${apiBaseUrl}${endpoint}`, defaultOptions);
+
+            if (!response.ok) {
+                throw new Error(`API call failed: ${response.status} ${response.statusText}`);
             }
-        ];
+
+            return response.json();
+        }
+
+        // Load data from API
+        async function loadDashboardData() {
+            try {
+                // Load stats
+                const stats = await apiCall('/dashboard/stats');
+                updateDashboardStats(stats);
+
+                // Load projects and articles
+                await Promise.all([
+                    loadProjects(),
+                    loadArticles()
+                ]);
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                // Fallback: show empty state or error message
+                updateDashboardStats({ total_projects: 0, total_articles: 0 });
+            }
+        }
+
+        async function loadProjects(search = '', sort = 'newest') {
+            try {
+                const params = new URLSearchParams();
+                if (search) params.append('search', search);
+                if (sort) params.append('sort', sort);
+
+                projects = await apiCall(`/dashboard/projects?${params}`);
+                renderProjects();
+            } catch (error) {
+                console.error('Error loading projects:', error);
+                projects = [];
+                renderProjects();
+            }
+        }
+
+        async function loadArticles(search = '', tag = '', sort = 'newest') {
+            try {
+                const params = new URLSearchParams();
+                if (search) params.append('search', search);
+                if (tag) params.append('tag', tag);
+                if (sort) params.append('sort', sort);
+
+                articles = await apiCall(`/dashboard/articles?${params}`);
+                renderArticles();
+            } catch (error) {
+                console.error('Error loading articles:', error);
+                articles = [];
+                renderArticles();
+            }
+        }
         
         // DOM Elements
         const navItems = document.querySelectorAll('.nav-item');
@@ -1405,9 +1480,7 @@
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
-            updateDashboardStats();
-            renderProjects();
-            renderArticles();
+            loadDashboardData();
             
             // Navigation
             navItems.forEach(item => {
@@ -1443,42 +1516,42 @@
             
             // Search and Filter Events
             btnSearchArtikel.addEventListener('click', () => {
-                currentArtikelSearch = searchArtikelInput.value.toLowerCase();
-                renderArticles();
+                currentArtikelSearch = searchArtikelInput.value;
+                loadArticles(currentArtikelSearch, currentArtikelTagFilter, currentArtikelSort);
             });
-            
+
             searchArtikelInput.addEventListener('keyup', (e) => {
                 if (e.key === 'Enter') {
-                    currentArtikelSearch = searchArtikelInput.value.toLowerCase();
-                    renderArticles();
+                    currentArtikelSearch = searchArtikelInput.value;
+                    loadArticles(currentArtikelSearch, currentArtikelTagFilter, currentArtikelSort);
                 }
             });
-            
+
             filterTagSelect.addEventListener('change', () => {
                 currentArtikelTagFilter = filterTagSelect.value;
-                renderArticles();
+                loadArticles(currentArtikelSearch, currentArtikelTagFilter, currentArtikelSort);
             });
-            
+
             sortArtikelSelect.addEventListener('change', () => {
                 currentArtikelSort = sortArtikelSelect.value;
-                renderArticles();
+                loadArticles(currentArtikelSearch, currentArtikelTagFilter, currentArtikelSort);
             });
-            
+
             btnSearchProject.addEventListener('click', () => {
-                currentProjectSearch = searchProjectInput.value.toLowerCase();
-                renderProjects();
+                currentProjectSearch = searchProjectInput.value;
+                loadProjects(currentProjectSearch, currentProjectSort);
             });
-            
+
             searchProjectInput.addEventListener('keyup', (e) => {
                 if (e.key === 'Enter') {
-                    currentProjectSearch = searchProjectInput.value.toLowerCase();
-                    renderProjects();
+                    currentProjectSearch = searchProjectInput.value;
+                    loadProjects(currentProjectSearch, currentProjectSort);
                 }
             });
-            
+
             sortProjectSelect.addEventListener('change', () => {
                 currentProjectSort = sortProjectSelect.value;
-                renderProjects();
+                loadProjects(currentProjectSearch, currentProjectSort);
             });
             
             // Image Upload Events
@@ -1533,10 +1606,23 @@
                 reader.onload = function(e) {
                     currentImageData = e.target.result;
                     previewImage.src = currentImageData;
-                    imagePreview.style.display = 'block';
-                    imageUploadContainer.style.display = 'none';
+                    previewImage.onload = function() {
+                        imagePreview.style.display = 'flex';
+                        imageUploadContainer.style.display = 'none';
+                    };
+                    previewImage.onerror = function() {
+                        alert('Gagal memuat preview gambar');
+                        currentImageData = null;
+                        imagePreview.style.display = 'none';
+                        imageUploadContainer.style.display = 'block';
+                    };
+                };
+                reader.onerror = function() {
+                    alert('Gagal membaca file gambar');
                 };
                 reader.readAsDataURL(file);
+            } else {
+                alert('File harus berupa gambar (JPG, PNG, GIF)');
             }
         }
         
@@ -1557,96 +1643,44 @@
                     reader.onload = function(e) {
                         currentImageData = e.target.result;
                         previewImage.src = currentImageData;
-                        imagePreview.style.display = 'block';
-                        imageUploadContainer.style.display = 'none';
+                        previewImage.onload = function() {
+                            imagePreview.style.display = 'flex';
+                            imageUploadContainer.style.display = 'none';
+                        };
+                        previewImage.onerror = function() {
+                            alert('Gagal memuat preview gambar');
+                            currentImageData = null;
+                            imagePreview.style.display = 'none';
+                            imageUploadContainer.style.display = 'block';
+                        };
+                    };
+                    reader.onerror = function() {
+                        alert('Gagal membaca file gambar');
                     };
                     reader.readAsDataURL(file);
+                } else {
+                    alert('File harus berupa gambar (JPG, PNG, GIF)');
                 }
             }
         }
         
         // Update dashboard stats
-        function updateDashboardStats() {
-            document.getElementById('total-projects').textContent = projects.length;
-            document.getElementById('total-articles').textContent = articles.length;
+        function updateDashboardStats(data = null) {
+            if (data) {
+                document.getElementById('total-projects').textContent = data.total_projects || 0;
+                document.getElementById('total-articles').textContent = data.total_articles || 0;
+            } else {
+                document.getElementById('total-projects').textContent = projects.length;
+                document.getElementById('total-articles').textContent = articles.length;
+            }
         }
         
-        // Filter and sort articles
-        function getFilteredAndSortedArticles() {
-            let filtered = [...articles];
-            
-            // Apply search filter
-            if (currentArtikelSearch) {
-                filtered = filtered.filter(article => 
-                    article.title.toLowerCase().includes(currentArtikelSearch) ||
-                    article.description.toLowerCase().includes(currentArtikelSearch) ||
-                    article.author.toLowerCase().includes(currentArtikelSearch)
-                );
-            }
-            
-            // Apply tag filter
-            if (currentArtikelTagFilter) {
-                filtered = filtered.filter(article => 
-                    article.tags && article.tags.includes(currentArtikelTagFilter)
-                );
-            }
-            
-            // Apply sorting
-            switch (currentArtikelSort) {
-                case 'newest':
-                    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    break;
-                case 'oldest':
-                    filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
-                    break;
-                case 'title-asc':
-                    filtered.sort((a, b) => a.title.localeCompare(b.title));
-                    break;
-                case 'title-desc':
-                    filtered.sort((a, b) => b.title.localeCompare(a.title));
-                    break;
-            }
-            
-            return filtered;
-        }
-        
-        // Filter and sort projects
-        function getFilteredAndSortedProjects() {
-            let filtered = [...projects];
-            
-            // Apply search filter
-            if (currentProjectSearch) {
-                filtered = filtered.filter(project => 
-                    project.title.toLowerCase().includes(currentProjectSearch) ||
-                    project.description.toLowerCase().includes(currentProjectSearch) ||
-                    project.projectLeader.toLowerCase().includes(currentProjectSearch)
-                );
-            }
-            
-            // Apply sorting
-            switch (currentProjectSort) {
-                case 'newest':
-                    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    break;
-                case 'oldest':
-                    filtered.sort((a, b) => new Date(a.date) - new Date(b.date));
-                    break;
-                case 'title-asc':
-                    filtered.sort((a, b) => a.title.localeCompare(b.title));
-                    break;
-                case 'title-desc':
-                    filtered.sort((a, b) => b.title.localeCompare(a.title));
-                    break;
-            }
-            
-            return filtered;
-        }
         
         // Render projects
         function renderProjects() {
             projectGrid.innerHTML = '';
-            
-            const filteredProjects = getFilteredAndSortedProjects();
+
+            const filteredProjects = projects;
             
             if (filteredProjects.length === 0) {
                 projectGrid.innerHTML = `
@@ -1661,12 +1695,36 @@
             filteredProjects.forEach(project => {
                 const projectCard = document.createElement('div');
                 projectCard.className = 'content-card';
+                
+                // Ensure image URL is complete
+                let imageUrl = project.image || '';
+                if (imageUrl) {
+                    // If it's already a full URL, use it as is
+                    if (!imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
+                        imageUrl = '/storage/' + imageUrl;
+                    }
+                    // If it starts with http but not our domain, might need to add base URL
+                    if (imageUrl.startsWith('http://127.0.0.1') || imageUrl.startsWith('http://localhost')) {
+                        // Keep as is
+                    } else if (imageUrl.startsWith('http')) {
+                        // External URL, keep as is
+                    }
+                }
+                
                 projectCard.innerHTML = `
-                    ${project.image ? `
                     <div class="content-image">
-                        <img src="${project.image}" alt="${project.title}">
+                        ${imageUrl ? `
+                        <img src="${imageUrl}" alt="${project.title}" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="image-placeholder" style="display:none;">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        ` : `
+                        <div class="image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        `}
                     </div>
-                    ` : ''}
                     <div class="content-body">
                         <div class="content-header">
                             <div>
@@ -1721,8 +1779,8 @@
         // Render articles
         function renderArticles() {
             artikelGrid.innerHTML = '';
-            
-            const filteredArticles = getFilteredAndSortedArticles();
+
+            const filteredArticles = articles;
             
             if (filteredArticles.length === 0) {
                 artikelGrid.innerHTML = `
@@ -1738,6 +1796,21 @@
                 const articleCard = document.createElement('div');
                 articleCard.className = 'content-card';
                 
+                // Ensure image URL is complete
+                let imageUrl = article.image || '';
+                if (imageUrl) {
+                    // If it's already a full URL, use it as is
+                    if (!imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
+                        imageUrl = '/storage/' + imageUrl;
+                    }
+                    // If it starts with http but not our domain, might need to add base URL
+                    if (imageUrl.startsWith('http://127.0.0.1') || imageUrl.startsWith('http://localhost')) {
+                        // Keep as is
+                    } else if (imageUrl.startsWith('http')) {
+                        // External URL, keep as is
+                    }
+                }
+                
                 // Generate tags HTML
                 let tagsHTML = '';
                 if (article.tags && article.tags.length > 0) {
@@ -1749,11 +1822,19 @@
                 }
                 
                 articleCard.innerHTML = `
-                    ${article.image ? `
                     <div class="content-image">
-                        <img src="${article.image}" alt="${article.title}">
+                        ${imageUrl ? `
+                        <img src="${imageUrl}" alt="${article.title}" 
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="image-placeholder" style="display:none;">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        ` : `
+                        <div class="image-placeholder">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        `}
                     </div>
-                    ` : ''}
                     <div class="content-body">
                         <div class="content-header">
                             <div>
@@ -1828,7 +1909,6 @@
             const dateField = document.getElementById('date-field');
             const tagsField = document.getElementById('tags-field');
             const authorField = document.getElementById('author-field');
-            const uploaderField = document.getElementById('uploader-field');
             const projectLeaderField = document.getElementById('project-leader-field');
             
             // Reset image upload
@@ -1851,13 +1931,11 @@
                 dateField.style.display = 'block';
                 tagsField.style.display = 'none';
                 authorField.style.display = 'none';
-                uploaderField.style.display = 'none';
                 projectLeaderField.style.display = 'block';
             } else {
                 dateField.style.display = 'block';
                 tagsField.style.display = 'block';
                 authorField.style.display = 'block';
-                uploaderField.style.display = 'block';
                 projectLeaderField.style.display = 'none';
             }
             
@@ -1873,10 +1951,28 @@
                 
                 // Set image if exists
                 if (item.image) {
+                    // Keep original image URL for edit (don't convert to base64)
                     currentImageData = item.image;
-                    previewImage.src = item.image;
-                    imagePreview.style.display = 'block';
-                    imageUploadContainer.style.display = 'none';
+                    let imageUrl = item.image;
+                    // Ensure URL is complete
+                    if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('/')) {
+                        imageUrl = '/storage/' + imageUrl;
+                    }
+                    previewImage.src = imageUrl;
+                    previewImage.onload = function() {
+                        imagePreview.style.display = 'flex';
+                        imageUploadContainer.style.display = 'none';
+                    };
+                    previewImage.onerror = function() {
+                        // If image fails to load, show placeholder
+                        currentImageData = null;
+                        imagePreview.style.display = 'none';
+                        imageUploadContainer.style.display = 'block';
+                    };
+                } else {
+                    currentImageData = null;
+                    imagePreview.style.display = 'none';
+                    imageUploadContainer.style.display = 'block';
                 }
                 
                 if (type === 'project') {
@@ -1885,7 +1981,6 @@
                 } else {
                     document.getElementById('item-date').value = item.date;
                     document.getElementById('item-author').value = item.author || '';
-                    document.getElementById('item-uploader').value = item.uploader || '';
                     
                     // Clear all tag checkboxes first
                     document.querySelectorAll('input[name="tags"]').forEach(checkbox => {
@@ -1918,7 +2013,6 @@
                 } else {
                     // Set default date to today for articles
                     document.getElementById('item-date').value = new Date().toISOString().split('T')[0];
-                    document.getElementById('item-uploader').value = 'Ulfi Sa\'adah';
                 }
             }
             
@@ -1932,87 +2026,96 @@
         }
         
         // Handle form submission
-        function handleFormSubmit(e) {
+        async function handleFormSubmit(e) {
             e.preventDefault();
-            
+
             const id = document.getElementById('edit-id').value;
             const type = document.getElementById('item-type').value;
             const title = document.getElementById('item-title').value;
             const description = document.getElementById('item-description').value;
             const date = document.getElementById('item-date').value;
-            
-            if (type === 'project') {
-                const projectLeader = document.getElementById('item-project-leader').value;
-                
-                if (id) {
-                    // Update existing project
-                    const index = projects.findIndex(p => p.id == id);
-                    projects[index] = {
-                        id: parseInt(id),
+            const isEdit = id && id !== '';
+
+            try {
+                if (type === 'project') {
+                    const projectLeader = document.getElementById('item-project-leader').value;
+
+                    const projectData = {
                         title,
                         description,
+                        project_leader: projectLeader,
                         date,
-                        projectLeader,
-                        image: currentImageData || projects[index].image
-                    };
-                } else {
-                    // Add new project
-                    const newId = projects.length > 0 ? Math.max(...projects.map(p => p.id)) + 1 : 1;
-                    projects.push({
-                        id: newId,
-                        title,
-                        description,
-                        date,
-                        projectLeader,
                         image: currentImageData
+                    };
+
+                    if (isEdit) {
+                        // Update existing project
+                        await apiCall(`/dashboard/projects/${id}`, {
+                            method: 'PUT',
+                            body: JSON.stringify(projectData)
+                        });
+                    } else {
+                        // Create new project
+                        await apiCall('/dashboard/projects', {
+                            method: 'POST',
+                            body: JSON.stringify(projectData)
+                        });
+                    }
+
+                    // Reload projects
+                    await loadProjects(currentProjectSearch, currentProjectSort);
+
+                } else {
+                    // Handle artikel
+                    const author = document.getElementById('item-author').value;
+
+                    // Get selected tags
+                    const selectedTags = [];
+                    document.querySelectorAll('input[name="tags"]:checked').forEach(checkbox => {
+                        selectedTags.push(checkbox.value);
                     });
-                }
-                
-                renderProjects();
-            } else {
-                // Handle artikel
-                const author = document.getElementById('item-author').value;
-                const uploader = document.getElementById('item-uploader').value;
-                
-                // Get selected tags
-                const selectedTags = [];
-                document.querySelectorAll('input[name="tags"]:checked').forEach(checkbox => {
-                    selectedTags.push(checkbox.value);
-                });
-                
-                if (id) {
-                    // Update existing artikel
-                    const index = articles.findIndex(a => a.id == id);
-                    articles[index] = {
-                        id: parseInt(id),
+
+                    const articleData = {
                         title,
                         description,
-                        date,
                         tags: selectedTags,
                         author,
-                        uploader,
-                        image: currentImageData || articles[index].image
-                    };
-                } else {
-                    // Add new artikel
-                    const newId = articles.length > 0 ? Math.max(...articles.map(a => a.id)) + 1 : 1;
-                    articles.push({
-                        id: newId,
-                        title,
-                        description,
                         date,
-                        tags: selectedTags,
-                        author,
-                        uploader,
                         image: currentImageData
-                    });
+                    };
+
+                    if (isEdit) {
+                        // Update existing article
+                        await apiCall(`/dashboard/articles/${id}`, {
+                            method: 'PUT',
+                            body: JSON.stringify(articleData)
+                        });
+                    } else {
+                        // Create new article
+                        await apiCall('/dashboard/articles', {
+                            method: 'POST',
+                            body: JSON.stringify(articleData)
+                        });
+                    }
+
+                    // Reload articles
+                    await loadArticles(currentArtikelSearch, currentArtikelTagFilter, currentArtikelSort);
                 }
-                
-                renderArticles();
+
+                // Reload stats
+                const stats = await apiCall('/dashboard/stats');
+                updateDashboardStats(stats);
+
+                closeModal();
+                resetForm();
+
+                // Show success message
+                alert(`${type === 'project' ? 'Project' : 'Artikel'} berhasil ${isEdit ? 'diperbarui' : 'dibuat'}!`);
+
+            } catch (error) {
+                console.error('Error saving item:', error);
+                alert(`Gagal menyimpan ${type === 'project' ? 'project' : 'artikel'}. Silakan coba lagi.`);
             }
-            
-            updateDashboardStats();
-            closeModal();
         }
         
         // Edit item
@@ -2021,21 +2124,53 @@
         }
         
         // Delete item
-        function deleteItem(id, type) {
-            if (confirm(`Are you sure you want to delete this ${type}?`)) {
-                if (type === 'project') {
-                    projects = projects.filter(p => p.id != id);
-                    renderProjects();
-                } else {
-                    articles = articles.filter(a => a.id != id);
-                    renderArticles();
-                }
-                updateDashboardStats();
+        async function deleteItem(id, type) {
+            if (!confirm(`Apakah Anda yakin ingin menghapus ${type === 'project' ? 'project' : 'artikel'} ini?`)) {
+                return;
             }
+
+            try {
+                if (type === 'project') {
+                    await apiCall(`/dashboard/projects/${id}`, {
+                        method: 'DELETE'
+                    });
+                    await loadProjects(currentProjectSearch, currentProjectSort);
+                } else {
+                    await apiCall(`/dashboard/articles/${id}`, {
+                        method: 'DELETE'
+                    });
+                    await loadArticles(currentArtikelSearch, currentArtikelTagFilter, currentArtikelSort);
+                }
+
+                // Reload stats
+                const stats = await apiCall('/dashboard/stats');
+                updateDashboardStats(stats);
+
+                alert(`${type === 'project' ? 'Project' : 'Artikel'} berhasil dihapus!`);
+            } catch (error) {
+                console.error('Error deleting item:', error);
+                alert(`Gagal menghapus ${type === 'project' ? 'project' : 'artikel'}. Silakan coba lagi.`);
+            }
+        }
+        
+        // Reset form
+        function resetForm() {
+            form.reset();
+            document.getElementById('edit-id').value = '';
+            currentImageData = null;
+            imagePreview.style.display = 'none';
+            imageUploadContainer.style.display = 'block';
+            imageInput.value = '';
+            
+            // Clear all tag checkboxes
+            document.querySelectorAll('input[name="tags"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
         }
         
         // Format date for display
         function formatDate(dateString) {
+            if (!dateString) return '-';
             const options = { day: 'numeric', month: 'short', year: 'numeric' };
             return new Date(dateString).toLocaleDateString('en-US', options);
         }

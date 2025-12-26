@@ -1,3 +1,6 @@
+@php
+use Illuminate\Support\Str;
+@endphp
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -566,17 +569,24 @@
                 
                 <ul class="nav-menu" id="navMenu">
                      <li class="nav-item">
-                        <a href="{{ url('/') }}" class="nav-link">Beranda</a>
+                        <a href="{{ route('home') }}" class="nav-link">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/articles') }}" class="nav-link active">Artikel</a>
+                        <a href="{{ route('artikel.index') }}" class="nav-link active">Artikel</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/project') }}" class="nav-link">Proyek</a>
+                        <a href="{{ route('project.index') }}" class="nav-link">Proyek</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ url('/register') }}" class="nav-link">Daftar</a>
-                    </li>
+                    @auth
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard') }}" class="nav-link">{{ Auth::user()->name }}</a>
+                        </li>
+                    @else
+                     
+                        <li class="nav-item">
+                            <a href="{{ route('register') }}" class="nav-link">Daftar</a>
+                        </li>
+                    @endauth
                 </ul>
             </nav>
             <div class="hero-text-container">
@@ -591,49 +601,51 @@
             <h2>Artikel Terbaru</h2>
             <div class="main-content">
                 <!-- Artikel Utama -->
+                @if($featuredArticle)
                 <section class="featured-article">
                     <div class="featured-image">
-                        <img src="https://source.unsplash.com/random/600x400/?teen-health" alt="Artikel Utama" class="featured-img">
+                        @if($featuredArticle->gambar)
+                            <img src="{{ asset('storage/' . $featuredArticle->gambar) }}" alt="{{ $featuredArticle->judul }}" class="featured-img" onerror="this.src='https://source.unsplash.com/random/600x400/?teen-health';">
+                        @else
+                            <img src="https://source.unsplash.com/random/600x400/?teen-health" alt="{{ $featuredArticle->judul }}" class="featured-img">
+                        @endif
                     </div>
                     <div class="featured-content">
                         <div class="article-meta">
-                            <span class="article-date">1 Juli 2023</span>
-                            <span class="article-category">Kesehatan Mental</span>
+                            <span class="article-date">{{ $featuredArticle->tanggal_terbit ? $featuredArticle->tanggal_terbit->format('d M Y') : 'Tanpa Tanggal' }}</span>
+                            @if($featuredArticle->kategori && is_array($featuredArticle->kategori) && count($featuredArticle->kategori) > 0)
+                                <span class="article-category">{{ implode(', ', $featuredArticle->kategori) }}</span>
+                            @endif
                         </div>
-                        <h2 class="article-title">Mengenal dan Mengelola Stres di Masa Remaja</h2>
-                        <p class="article-excerpt">Remaja seringkali menghadapi berbagai tekanan dari sekolah, pertemanan, dan keluarga. Artikel ini membahas cara mengenali tanda-tanda stres dan strategi efektif untuk mengelolanya dengan sehat.</p>
-                        <a href="#" class="read-more">Baca Selengkapnya</a>
+                        <h2 class="article-title">{{ $featuredArticle->judul }}</h2>
+                        <p class="article-excerpt">{{ Str::limit($featuredArticle->deskripsi, 200) }}</p>
+                        <a href="{{ route('artikel.show', $featuredArticle->id) }}" class="read-more">Baca Selengkapnya</a>
                     </div>
                 </section>
+                @endif
 
                 <!-- Sidebar -->
                 <aside class="sidebar">
                     <h3 class="sidebar-title">Artikel Populer</h3>
                     <div class="sidebar-articles">
+                        @forelse($popularArticles as $article)
                         <div class="sidebar-article">
-                            <img src="https://source.unsplash.com/random/150x150/?nutrition" alt="Artikel 1" class="sidebar-article-image">
+                            @if($article->gambar)
+                                <img src="{{ asset('storage/' . $article->gambar) }}" alt="{{ $article->judul }}" class="sidebar-article-image" onerror="this.src='https://source.unsplash.com/random/150x150/?health';">
+                            @else
+                                <img src="https://source.unsplash.com/random/150x150/?health" alt="{{ $article->judul }}" class="sidebar-article-image">
+                            @endif
                             <div class="sidebar-article-content">
-                                <div class="sidebar-article-date">2 Juni 2023</div>
-                                <h4 class="sidebar-article-title">Pola Makan Seimbang untuk Remaja Aktif</h4>
-                                <p class="sidebar-article-excerpt">Tips memenuhi kebutuhan gizi harian dengan makanan yang mudah didapat...</p>
+                                <div class="sidebar-article-date">{{ $article->tanggal_terbit ? $article->tanggal_terbit->format('d M Y') : 'Tanpa Tanggal' }}</div>
+                                <h4 class="sidebar-article-title">{{ Str::limit($article->judul, 50) }}</h4>
+                                <p class="sidebar-article-excerpt">{{ Str::limit($article->deskripsi, 80) }}</p>
                             </div>
                         </div>
+                        @empty
                         <div class="sidebar-article">
-                            <img src="https://source.unsplash.com/random/150x150/?exercise" alt="Artikel 2" class="sidebar-article-image">
-                            <div class="sidebar-article-content">
-                                <div class="sidebar-article-date">3 Juli 2023</div>
-                                <h4 class="sidebar-article-title">Olahraga yang Cocok untuk Remaja</h4>
-                                <p class="sidebar-article-excerpt">Rekomendasi jenis olahraga yang menyenangkan dan bermanfaat...</p>
-                            </div>
+                            <p>Tidak ada artikel populer</p>
                         </div>
-                        <div class="sidebar-article">
-                            <img src="https://source.unsplash.com/random/150x150/?sleep" alt="Artikel 3" class="sidebar-article-image">
-                            <div class="sidebar-article-content">
-                                <div class="sidebar-article-date">4 Juni 2023</div>
-                                <h4 class="sidebar-article-title">Pentingnya Tidur Cukup bagi Remaja</h4>
-                                <p class="sidebar-article-excerpt">Dampak kurang tidur terhadap perkembangan dan prestasi akademik...</p>
-                            </div>
-                        </div>
+                        @endforelse
                     </div>
                 </aside>
             </div>
@@ -642,48 +654,61 @@
         <section>
             <div class="section-header-with-button">
                 <h2>Artikel Lainnya</h2>
-                <a href="#" class="load-more-btn">
+                @if($artikels->hasMorePages())
+                <a href="{{ $artikels->nextPageUrl() }}" class="load-more-btn">
                     Lihat Lebih Banyak >
                 </a>
+                @endif
             </div>
             <div class="articles-container">
+                @forelse($artikels as $artikel)
                 <article class="article-card">
-                    <img src="https://source.unsplash.com/random/400x250/?hygiene" alt="Artikel 1" class="card-image">
+                    @if($artikel->gambar)
+                        <img src="{{ asset('storage/' . $artikel->gambar) }}" alt="{{ $artikel->judul }}" class="card-image" onerror="this.src='https://source.unsplash.com/random/400x250/?health';">
+                    @else
+                        <img src="https://source.unsplash.com/random/400x250/?health" alt="{{ $artikel->judul }}" class="card-image">
+                    @endif
                     <div class="card-content">
                         <div class="card-meta">
-                            <span>15 Mei 2023</span>
-                            <span>Kesehatan</span>
+                            <span>{{ $artikel->tanggal_terbit ? $artikel->tanggal_terbit->format('d M Y') : 'Tanpa Tanggal' }}</span>
+                            @if($artikel->kategori && is_array($artikel->kategori) && count($artikel->kategori) > 0)
+                                <span>{{ implode(', ', array_slice($artikel->kategori, 0, 1)) }}</span>
+                            @else
+                                <span>Artikel</span>
+                            @endif
                         </div>
-                        <h3 class="card-title">PHBS: Langkah Sederhana Menuju Hidup Sehat</h3>
-                        <p class="card-excerpt">Perilaku Hidup Bersih dan Sehat (PHBS) adalah kunci utama mencegah berbagai penyakit. Pelajari cara menerapkannya dalam kehidupan sehari-hari.</p>
-                        <a href="#" class="card-link">Baca Selengkapnya</a>
+                        <h3 class="card-title">{{ $artikel->judul }}</h3>
+                        <p class="card-excerpt">{{ Str::limit($artikel->deskripsi, 150) }}</p>
+                        <a href="{{ route('artikel.show', $artikel->id) }}" class="card-link">Baca Selengkapnya</a>
                     </div>
                 </article>
-                <article class="article-card">
-                    <img src="https://source.unsplash.com/random/400x250/?friends" alt="Artikel 2" class="card-image">
-                    <div class="card-content">
-                        <div class="card-meta">
-                            <span>22 April 2023</span>
-                            <span>Psikologi</span>
-                        </div>
-                        <h3 class="card-title">Membangun Pertemanan Sehat di Era Digital</h3>
-                        <p class="card-excerpt">Di era media sosial, penting untuk menjaga kualitas pertemanan. Temukan cara membangun hubungan yang sehat dan saling mendukung.</p>
-                        <a href="#" class="card-link">Baca Selengkapnya</a>
-                    </div>
-                </article>
-                <article class="article-card">
-                    <img src="https://source.unsplash.com/random/400x250/?reproductive-health" alt="Artikel 3" class="card-image">
-                    <div class="card-content">
-                        <div class="card-meta">
-                            <span>10 Maret 2023</span>
-                            <span>Kesehatan Reproduksi</span>
-                        </div>
-                        <h3 class="card-title">Pemahaman Dasar Kesehatan Reproduksi Remaja</h3>
-                        <p class="card-excerpt">Informasi penting tentang perubahan tubuh dan kesehatan reproduksi yang perlu diketahui setiap remaja.</p>
-                        <a href="#" class="card-link">Baca Selengkapnya</a>
-                    </div>
-                </article>
+                @empty
+                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                    <p style="font-size: 1.2rem; color: #666;">Belum ada artikel yang tersedia.</p>
+                </div>
+                @endforelse
             </div>
+            
+            <!-- Pagination -->
+            @if($artikels->hasPages())
+            <div style="margin-top: 3rem; display: flex; justify-content: center; align-items: center; gap: 1rem;">
+                @if($artikels->onFirstPage())
+                    <span style="padding: 10px 20px; color: #999; cursor: not-allowed;">« Sebelumnya</span>
+                @else
+                    <a href="{{ $artikels->previousPageUrl() }}" style="padding: 10px 20px; background: var(--primary); color: white; text-decoration: none; border-radius: 5px;">« Sebelumnya</a>
+                @endif
+                
+                <span style="padding: 10px 20px; color: var(--primary); font-weight: 600;">
+                    Halaman {{ $artikels->currentPage() }} dari {{ $artikels->lastPage() }}
+                </span>
+                
+                @if($artikels->hasMorePages())
+                    <a href="{{ $artikels->nextPageUrl() }}" style="padding: 10px 20px; background: var(--primary); color: white; text-decoration: none; border-radius: 5px;">Selanjutnya »</a>
+                @else
+                    <span style="padding: 10px 20px; color: #999; cursor: not-allowed;">Selanjutnya »</span>
+                @endif
+            </div>
+            @endif
         </section>
     </main>
 

@@ -865,17 +865,23 @@
                 
                 <ul class="nav-menu" id="navMenu">
                      <li class="nav-item">
-                        <a href="{{ url('/') }}" class="nav-link">Beranda</a>
+                            <a href="{{ route('home') }}" class="nav-link">Beranda</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/articles') }}" class="nav-link">Artikel</a>
+                        <a href="{{ route('artikel.index') }}" class="nav-link">Artikel</a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/project') }}" class="nav-link active">Proyek</a>
+                        <a href="{{ route('project.index') }}" class="nav-link active">Proyek</a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ url('/register') }}" class="nav-link">Daftar</a>
-                    </li>
+                    @auth
+                        <li class="nav-item">
+                            <a href="{{ route('dashboard') }}" class="nav-link">{{ Auth::user()->name }}</a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a href="{{ route('register') }}" class="nav-link">Daftar</a>
+                        </li>
+                    @endauth
                 </ul>
             </nav>
             <div class="hero-text-container">

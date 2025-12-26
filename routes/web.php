@@ -13,7 +13,7 @@ Route::get('/', function () {
 // Public Artikel Routes
 Route::prefix('artikel')->name('artikel.')->group(function () {
     Route::get('/', [ArtikelController::class, 'publicIndex'])->name('index');
-    Route::get('/{artikel:slug}', [ArtikelController::class, 'show'])->name('show');
+    Route::get('/{artikel}', [ArtikelController::class, 'show'])->name('show');
 });
 
 // Public Project Routes
@@ -32,6 +32,11 @@ Route::middleware('guest')->group(function () {
     Route::get('register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'create'])
                 ->name('register');
     Route::post('register', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'store']);
+
+    Route::get('register_2', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'create2'])
+                ->name('register_2');
+    Route::post('register_2', [\App\Http\Controllers\Auth\RegisteredUserController::class, 'store2'])
+                ->name('register_2.store');
 });
 
 // Protected Routes

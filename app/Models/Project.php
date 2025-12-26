@@ -23,6 +23,7 @@ class Project extends Model
         'status',
         'target_donasi',
         'donasi_terkumpul',
+        'project_leader',
         'user_id',
     ];
 

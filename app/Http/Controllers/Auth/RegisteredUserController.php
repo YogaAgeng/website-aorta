@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        return view('register');
     }
 
     /**
@@ -51,5 +51,48 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect('/');
+    }
+
+    /**
+     * Display the registration view (register_2).
+     */
+    public function create2(): View
+    {
+        return view('auth.register_2');
+    }
+
+    /**
+     * Handle an incoming registration request (register_2).
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function store2(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'address' => ['required', 'string', 'max:500'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'terms' => ['required', 'accepted'],
+        ]);
+
+        // Get the 'donor' role ID
+        $donorRole = Role::where('name', 'donor')->firstOrFail();
+
+        $user = User::create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'address' => $request->address,
+            'password' => Hash::make($request->password),
+            'role_id' => $donorRole->id,
+        ]);
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect('/')->with('success', 'Pendaftaran berhasil! Selamat bergabung dengan AORTA Malang.');
     }
 }
