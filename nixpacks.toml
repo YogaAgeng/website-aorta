@@ -1,5 +1,9 @@
+# Railway Nixpacks configuration
+providers = ["php", "node"]
+
 [phases.setup]
-nixPkgs = ["php84", "php84Extensions.pdo_mysql", "php84Extensions.gd", "php84Extensions.zip", "php84Extensions.mbstring", "php84Extensions.intl", "php84Extensions.opcache", "php84Extensions.tokenizer", "php84Extensions.dom", "php84Extensions.xml", "php84Extensions.curl", "nodejs_20"]
+nixPkgs = ["php84", "php84Packages.composer", "nodejs_20", "npm"]
+aptPkgs = ["libpng-dev", "libjpeg-dev", "libfreetype6-dev", "libzip-dev", "unzip", "git"]
 
 [phases.install]
 cmds = [
@@ -8,9 +12,5 @@ cmds = [
     "npm run build"
 ]
 
-[phases.build]
-cmds = [
-    "php artisan config:clear",
-    "php artisan route:clear",
-    "php artisan view:clear"
-]
+[start]
+cmd = "php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"
