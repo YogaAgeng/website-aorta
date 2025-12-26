@@ -24,7 +24,7 @@ RUN npm run build
 ###########################################
 # Stage 2: PHP Application
 ###########################################
-FROM php:8.4-fpm-alpine
+FROM php:8.4-cli-alpine
 
 # Set working directory
 WORKDIR /var/www
@@ -75,17 +75,11 @@ COPY docker/php/local.ini /usr/local/etc/php/conf.d/local.ini
 # Copy application files
 COPY --chown=www:www . /var/www
 
-# Setup environment file
-RUN cp .env.docker .env
-
 # Copy built assets from node-builder
 COPY --from=node-builder --chown=www:www /var/www/public/build /var/www/public/build
 
 # Install Composer dependencies
 RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Generate APP_KEY
-RUN php artisan key:generate --force
 
 # Set permissions
 RUN chown -R www:www /var/www \
@@ -95,7 +89,8 @@ RUN chown -R www:www /var/www \
 # Switch to non-root user
 USER www
 
-# Expose port 9000 for PHP-FPM
-EXPOSE 9000
+# Expose port (Render uses PORT env variable)
+EXPOSE 10000
 
-CMD ["php-fpm"]
+# Start with php artisan serve
+CMD php artisan migrate --force && php artisan serve --host=0.0.0.0 --port=${PORT:-10000}
