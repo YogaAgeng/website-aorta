@@ -54,6 +54,99 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
+## Docker Deployment
+
+### Prerequisites
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
+- Git (for cloning the repository)
+
+### Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd website-aorta
+   ```
+
+2. **Setup environment file**
+   ```bash
+   cp .env.docker .env
+   ```
+
+3. **Generate application key**
+   ```bash
+   # On Windows PowerShell:
+   docker run --rm -v ${PWD}:/var/www -w /var/www php:8.2-cli php artisan key:generate
+   ```
+
+4. **Build and start containers**
+   ```bash
+   docker-compose up -d --build
+   ```
+
+5. **Run database migrations**
+   ```bash
+   docker-compose exec app php artisan migrate --force
+   ```
+
+6. **Access the application**
+   - Open browser: http://localhost:8080
+
+### Docker Services
+
+| Service | Container Name | Port |
+|---------|---------------|------|
+| PHP-FPM | aorta-app | 9000 (internal) |
+| Nginx | aorta-webserver | 8080:80 |
+| MySQL | aorta-db | 3307:3306 |
+| Redis | aorta-redis | 6380:6379 |
+
+### Useful Commands
+
+```bash
+# View logs
+docker-compose logs -f
+
+# Stop all containers
+docker-compose down
+
+# Rebuild containers
+docker-compose up -d --build
+
+# Access PHP container shell
+docker-compose exec app sh
+
+# Run artisan commands
+docker-compose exec app php artisan <command>
+
+# Run composer commands
+docker-compose exec app composer <command>
+
+# Clear all caches
+docker-compose exec app php artisan optimize:clear
+```
+
+### Troubleshooting
+
+**Database connection refused:**
+```bash
+# Wait for MySQL to be ready, then run:
+docker-compose exec app php artisan migrate
+```
+
+**Permission issues:**
+```bash
+docker-compose exec app chmod -R 775 storage bootstrap/cache
+```
+
+**Rebuild from scratch:**
+```bash
+docker-compose down -v
+docker-compose up -d --build
+```
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
